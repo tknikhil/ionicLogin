@@ -9,4 +9,8 @@ export class RegistrationPage implements OnInit {
   constructor() {}
 
   ngOnInit() {}
+
+  signUp() {
+    //things to do
+  }
 }

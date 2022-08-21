@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { getAuth } from 'firebase/auth';
@@ -9,6 +9,7 @@ import {
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
 import { User } from './user';
+import * as auth from 'firebase/auth';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +19,8 @@ export class AuthServiceService {
   constructor(
     public afStore: AngularFirestore,
     public ngFireAuth: AngularFireAuth,
-    public router: Router
+    public router: Router,
+    public ngZone: NgZone
   ) {
     this.ngFireAuth.authState.subscribe((user) => {
       if (user) {
@@ -69,5 +71,26 @@ export class AuthServiceService {
     return userRef.set(userData, {
       merge: true,
     });
+  }
+
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  GoogleAuth() {
+    return this.AuthLogin(new auth.GoogleAuthProvider());
+  }
+
+  // Auth providers
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  AuthLogin(provider) {
+    return this.ngFireAuth
+      .signInWithPopup(provider)
+      .then((result) => {
+        this.ngZone.run(() => {
+          this.router.navigate(['dashboard']);
+        });
+        this.SetUserData(result.user);
+      })
+      .catch((error) => {
+        window.alert(error);
+      });
   }
 }
