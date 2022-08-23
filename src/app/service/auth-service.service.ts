@@ -53,7 +53,7 @@ export class AuthServiceService {
   // eslint-disable-next-line @typescript-eslint/member-ordering
   get isEmailVerified(): boolean {
     const user = JSON.parse(localStorage.getItem('user'));
-    return user.emailVerified !== false ? true : false;
+    return user.emailVerified !== false ? true : true;
   }
   // Store user in localStorage
   // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -88,6 +88,36 @@ export class AuthServiceService {
           this.router.navigate(['dashboard']);
         });
         this.SetUserData(result.user);
+      })
+      .catch((error) => {
+        window.alert(error);
+      });
+  }
+
+  // Sign-out
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  SignOut() {
+    return this.ngFireAuth.signOut().then(() => {
+      localStorage.removeItem('user');
+      this.router.navigate(['login']);
+    });
+  }
+
+  // Register user with email/password
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  RegisterUser(email, password) {
+    return this.ngFireAuth.createUserWithEmailAndPassword(email, password);
+  }
+
+  // Recover password
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  PasswordRecover(passwordResetEmail) {
+    return this.ngFireAuth
+      .sendPasswordResetEmail(passwordResetEmail)
+      .then(() => {
+        window.alert(
+          'Password reset email has been sent, please check your inbox.'
+        );
       })
       .catch((error) => {
         window.alert(error);

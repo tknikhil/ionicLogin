@@ -13,6 +13,8 @@ export const environment = {
     appId: '1:498829532262:web:c71e3adc59c14df2dc61a7',
     measurementId: 'G-4EWBFX9525',
   },
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  google_maps_api_key: 'AIzaSyB-4yP4H61wkDxwHhCUzGJOrmzCiZPx-5g',
 };
 
 /*

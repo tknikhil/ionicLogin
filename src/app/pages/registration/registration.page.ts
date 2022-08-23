@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthServiceService } from 'src/app/service/auth-service.service';
 
 @Component({
   selector: 'app-registration',
@@ -6,11 +8,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./registration.page.scss'],
 })
 export class RegistrationPage implements OnInit {
-  constructor() {}
+  constructor(public authService: AuthServiceService, public router: Router) {}
 
   ngOnInit() {}
 
-  signUp() {
-    //things to do
+  signUp(email, password) {
+    this.authService
+      .RegisterUser(email.value, password.value)
+      .then((res) => {
+        this.authService.SendVerificationMail();
+      })
+      .catch((error) => {
+        window.alert(error.message);
+      });
   }
 }

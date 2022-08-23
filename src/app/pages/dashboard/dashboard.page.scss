@@ -1,0 +1,15 @@
+ion-content {
+  --background: none !important;
+}
+
+#maps {
+  height: 50vh;
+  margin: 20px;
+  border: 1px solid black;
+}
+
+capacitor-google-maps {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+}
